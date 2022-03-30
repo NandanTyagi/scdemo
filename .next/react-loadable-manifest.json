@@ -1,0 +1,18 @@
+{
+  "create-post.js -> react-simplemde-editor": {
+    "id": 81634,
+    "files": [
+      "static/chunks/f65a48b9.672d99687d13c20f.js",
+      "static/chunks/634.85ce40af7f1f196c.js",
+      "static/chunks/562.04c005e1352dcc2d.js"
+    ]
+  },
+  "edit-post\\[id].js -> react-simplemde-editor": {
+    "id": 81634,
+    "files": [
+      "static/chunks/f65a48b9.672d99687d13c20f.js",
+      "static/chunks/634.85ce40af7f1f196c.js",
+      "static/chunks/562.04c005e1352dcc2d.js"
+    ]
+  }
+}
