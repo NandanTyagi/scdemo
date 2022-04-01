@@ -48,14 +48,23 @@ function MyApp({ Component, pageProps }) {
         <div className={header}>
           <Link href="/">
             <a>
-              <img src="/logo.svg" alt="React Logo" style={{ width: '50px' }} />
+              <img
+                src="/logo.svg"
+                alt="React Logo"
+                style={{
+                  width: '50px',
+                  border: '1px solid black',
+                  backgroundColor: 'black',
+                  borderRadius: '100px',
+                }}
+              />
             </a>
           </Link>
           <Link href="/">
             <a>
               <div className={titleContainer}>
-                <h2 className={title}>Full Stack</h2>
-                <p className={description}>WEB3</p>
+                <h2 className={title}>Black Pearl</h2>
+                <p className={description}>DAO</p>
               </div>
             </a>
           </Link>
@@ -77,7 +86,7 @@ function MyApp({ Component, pageProps }) {
             /* show the nav link to create a new post */
             account === ownerAddress && (
               <Link href="/create-post">
-                <a className={link}>Create Post</a>
+                <a className={link}>Create Pearl</a>
               </Link>
             )
           }

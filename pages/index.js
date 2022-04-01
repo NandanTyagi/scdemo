@@ -10,7 +10,7 @@ import { AccountContext } from '../context';
 import { contractAddress, ownerAddress } from '../config';
 
 /* import Application Binary Interface (ABI) */
-import Blog from '../artifacts/contracts/Blog.sol/Blog.json';
+import BlackPearl from '../artifacts/contracts/BlackPearl.sol/BlacKPearl.json';
 
 export default function Home(props) {
   /* posts are fetched server side and passed in as props */
@@ -22,9 +22,9 @@ export default function Home(props) {
   async function navigate() {
     router.push('/create-post');
   }
-
   return (
     <div>
+      {console.log('posts', posts)}
       <div className={postList}>
         {
           /* map over the posts array and render a button with the post title */
@@ -32,7 +32,6 @@ export default function Home(props) {
             <Link href={`/post/${post[2]}`} key={index}>
               <a>
                 <div className={linkStyle}>
-                  <p className={postTitle}>{post[1]}</p>
                   <div className={arrowContainer}>
                     <img
                       src="/right-arrow.svg"
@@ -40,6 +39,9 @@ export default function Home(props) {
                       className={smallArrow}
                     />
                   </div>
+                  <p className={postTitle}>
+                    {post[2]} - {post[3]}kr
+                  </p>
                 </div>
               </a>
             </Link>
@@ -51,7 +53,7 @@ export default function Home(props) {
           /* if the signed in user is the account owner, render a button */
           /* to create the first post */
           <button className={buttonStyle} onClick={navigate}>
-            Create your first post
+            Create your first pearl
             <img src="/right-arrow.svg" alt="Right arrow" className={arrow} />
           </button>
         )}
@@ -74,8 +76,12 @@ export async function getServerSideProps() {
     provider = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
   }
 
-  const contract = new ethers.Contract(contractAddress, Blog.abi, provider);
-  const data = await contract.fetchPosts();
+  const contract = new ethers.Contract(
+    contractAddress,
+    BlackPearl.abi,
+    provider,
+  );
+  const data = await contract.fetchPearls();
   return {
     props: {
       posts: JSON.parse(JSON.stringify(data)),
@@ -85,9 +91,14 @@ export async function getServerSideProps() {
 
 const arrowContainer = css`
   display: flex;
-  flex: 1;
+
   justify-content: flex-end;
   padding-right: 20px;
+  background-color: black;
+  border-radius: 100px;
+  witdth: 50px;
+  height: 45px;
+  margin: auto 10px auto;
 `;
 
 const postTitle = css`
@@ -135,4 +146,5 @@ const arrow = css`
 
 const smallArrow = css`
   width: 25px;
+  visibility: hidden;
 `;
