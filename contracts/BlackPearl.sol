@@ -21,7 +21,7 @@ contract BlackPearl {
     }
  
     /* mappings can be seen as hash tables */
-    /* here we create lookups for posts by id and posts by ipfs hash */
+    /* here we create lookups for pearls by id and pearls by ipfs hash */
     mapping(uint => Pearl) private idToPearl;
     mapping(string => Pearl) private hashToPearl;
 
@@ -30,7 +30,7 @@ contract BlackPearl {
     event PearlCreated(uint id, string tributee, string amount, string hash);
     event PearlUpdated(uint id, string tributee, string amount, string hash, bool published);
 
-    /* when the blog is deployed, give it a name */
+    /* when the DApp is deployed, give it a name */
     /* also set the creator as the owner of the contract */
     constructor(string memory _name) {
         console.log("Deploying Black Pearl Contract with name:", _name);
@@ -38,7 +38,7 @@ contract BlackPearl {
         owner = msg.sender;
     }
 
-    /* updates the blog name */
+    /* updates the DApp name */
     function updateName(string memory _name) public {
         name = _name;
     }
@@ -48,12 +48,12 @@ contract BlackPearl {
         owner = newOwner;
     }
 
-    /* fetches an individual post by the content hash */
+    /* fetches an individual pearl by the content hash */
     function fetchPearl(string memory hash) public view returns(Pearl memory){
       return hashToPearl[hash];
     }
 
-    /* creates a new post */
+    /* creates a new pearl */
     function createPearl(string memory tributee, string memory amount, string memory hash) public onlyOwner {
         _postIds.increment();
         uint postId = _postIds.current();
@@ -67,7 +67,7 @@ contract BlackPearl {
         emit PearlCreated(postId, tributee, amount, hash);
     }
 
-    /* updates an existing post */
+    /* updates an existing pearl */
     function updatePearl(uint postId, string memory tributee, string memory amount, string memory hash, bool published) public onlyOwner {
         Pearl storage pearl =  idToPearl[postId];
         pearl.tributee = tributee;
@@ -79,7 +79,7 @@ contract BlackPearl {
         emit PearlUpdated(pearl.id, tributee, amount, hash, published);
     }
 
-    /* fetches all posts */
+    /* fetches all pearls */
     function fetchPearls() public view returns (Pearl[] memory) {
         uint itemCount = _postIds.current();
 
