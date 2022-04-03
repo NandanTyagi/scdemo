@@ -9,7 +9,7 @@ import { AccountContext } from '../../context';
 
 /* import contract and owner addresses */
 import { contractAddress, ownerAddress } from '../../config';
-import Blog from '../../artifacts/contracts/Blog.sol/Blog.json';
+import BlackPearl from '../../artifacts/contracts/BlackPearl.sol/BlackPearl.json';
 
 const ipfsURI = 'https://ipfs.io/ipfs/';
 
@@ -65,8 +65,12 @@ export async function getStaticPaths() {
     provider = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
   }
 
-  const contract = new ethers.Contract(contractAddress, Blog.abi, provider);
-  const data = await contract.fetchPosts();
+  const contract = new ethers.Contract(
+    contractAddress,
+    BlackPearl.abi,
+    provider,
+  );
+  const data = await contract.fetchPearls();
 
   /* then we map over the posts and create a params object passing */
   /* the id property to getStaticProps which will run for ever post */
