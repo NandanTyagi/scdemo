@@ -1,36 +1,45 @@
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
 
-describe('Blog', async function () {
-  it('Should create a post', async function () {
-    const Blog = await ethers.getContractFactory('Blog');
-    const blog = await Blog.deploy('My blog');
-    await blog.deployed();
-    await blog.createPost('My first post', '12345');
+describe('Pearl', async function () {
+  it('Should create a Pearl', async function () {
+    const Pearl = await ethers.getContractFactory('BlackPearl');
+    const pearl = await Pearl.deploy('My pearl');
+    await pearl.deployed();
+    await pearl.createPearl('My first pearl', '150', '12345');
 
-    const posts = await blog.fetchPosts();
-    expect(posts[0].title).to.equal('My first post');
+    const pearls = await pearl.fetchPearls();
+    expect(pearls[0].tributee).to.equal('My first pearl');
+  });
+  it('Should create correct Pearl amount', async function () {
+    const Pearl = await ethers.getContractFactory('BlackPearl');
+    const pearl = await Pearl.deploy('My pearl');
+    await pearl.deployed();
+    await pearl.createPearl('My first pearl', '100', '12345');
+
+    const pearls = await pearl.fetchPearls();
+    expect(pearls[0].amount).to.equal('100');
   });
 
-  it('Should edit a post', async function () {
-    const Blog = await ethers.getContractFactory('Blog');
-    const blog = await Blog.deploy('My blog');
-    await blog.deployed();
-    await blog.createPost('My Second post', '12345');
+  it('Should edit a pearl', async function () {
+    const Pearl = await ethers.getContractFactory('BlackPearl');
+    const pearl = await Pearl.deploy('My pearl');
+    await pearl.deployed();
+    await pearl.createPearl('My Second pearl', '152', '12345');
 
-    await blog.updatePost(1, 'My updated post', '23456', true);
+    await pearl.updatePearl(1, 'My updated pearl', '170', '23456', true);
 
-    posts = await blog.fetchPosts();
-    expect(posts[0].title).to.equal('My updated post');
+    pearls = await pearl.fetchPearls();
+    expect(pearls[0].tributee).to.equal('My updated pearl');
   });
 
   it('Should add update the name', async function () {
-    const Blog = await ethers.getContractFactory('Blog');
-    const blog = await Blog.deploy('My blog');
-    await blog.deployed();
+    const Pearl = await ethers.getContractFactory('BlackPearl');
+    const pearl = await Pearl.deploy('My pearl');
+    await pearl.deployed();
 
-    expect(await blog.name()).to.equal('My blog');
-    await blog.updateName('My new blog');
-    expect(await blog.name()).to.equal('My new blog');
+    expect(await pearl.name()).to.equal('My pearl');
+    await pearl.updateName('My new pearl');
+    expect(await pearl.name()).to.equal('My new pearl');
   });
 });

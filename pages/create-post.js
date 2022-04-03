@@ -9,7 +9,7 @@ import { create } from 'ipfs-http-client';
 /* import contract address and contract owner address */
 import { contractAddress } from '../config';
 
-import Blog from '../artifacts/contracts/Blog.sol/Blog.json';
+import BlackPearl from '../artifacts/contracts/BlackPearl.sol/BlackPearl.json';
 
 /* define the ipfs endpoint */
 const client = create('https://ipfs.infura.io:5001/api/v0');
@@ -28,7 +28,7 @@ function CreatePost() {
   const [loaded, setLoaded] = useState(false);
 
   const fileRef = useRef(null);
-  const { title, content } = post;
+  const { title, amount } = post;
   const router = useRouter();
 
   useEffect(() => {
@@ -39,12 +39,13 @@ function CreatePost() {
   }, []);
 
   function onChange(e) {
+    console.log('e.target', e.target);
     setPost(() => ({ ...post, [e.target.name]: e.target.value }));
   }
 
   async function createNewPost() {
     /* saves post to ipfs then anchors to smart contract */
-    if (!title || !content) return;
+    if (!title || !amount) return;
     const hash = await savePostToIpfs();
     console.log('hash', hash);
     await savePost(hash);
@@ -66,10 +67,15 @@ function CreatePost() {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, Blog.abi, signer);
+      const contract = new ethers.Contract(
+        contractAddress,
+        BlackPearl.abi,
+        signer,
+      );
       console.log('contract: ', contract);
+      console.log('post.title: ', post.title);
       try {
-        const val = await contract.createPost(post.title, hash);
+        const val = await contract.createPearl(post.title, post.amount, hash);
         /* optional - wait for transaction to be confirmed before rerouting */
         /* await provider.waitForTransaction(val.hash) */
         console.log('val: ', val);
@@ -101,24 +107,27 @@ function CreatePost() {
       <input
         onChange={onChange}
         name="title"
-        placeholder="Give it a title ..."
+        placeholder="Tribute to..."
         value={post.title}
         className={titleStyle}
       />
-      <SimpleMDE
-        className={mdEditor}
-        placeholder="What's on your mind?"
-        value={post.content}
-        onChange={(value) => setPost({ ...post, content: value })}
+      <input
+        // className={mdEditor}
+        className={titleStyle}
+        name="amount"
+        placeholder="Enter amount..."
+        value={post.amount}
+        // onChange={(value) => setPost({ ...post, content: value })}
+        onChange={onChange}
       />
       {loaded && (
         <>
           <button className={button} type="button" onClick={createNewPost}>
-            Publish
+            Send
           </button>
-          <button onClick={triggerOnChange} className={button}>
+          {/* <button onClick={triggerOnChange} className={button}>
             Add cover image
-          </button>
+          </button> */}
         </>
       )}
       <input
